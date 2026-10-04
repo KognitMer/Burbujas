@@ -26,7 +26,7 @@ export function initAudio() {
 }
 
 /* Cada tipo de burbuja suena distinto:
-   pos = pop agudo con resto de brillo · neg = un soplido que se aleja · neu = pop cálido y grave · dark = disolverse suave.
+   pos = pop de burbuja agudo · neg = un soplido que se aleja · neu = pop de burbuja grave y cálido · dark = disolverse suave.
    sfxSend manda una parte del sonido a la reverb de efectos (aire, sin graves). */
 function sfxSend(node, wet, dry = 1) {
   if (dry > 0) { if (dry === 1) node.connect(audio.master); else { const d = audio.ctx.createGain(); d.gain.value = dry; node.connect(d); d.connect(audio.master); } }
@@ -41,32 +41,25 @@ function tone(f, t, attack, decay, amp, wet, dry = 1) {
   o.connect(g); sfxSend(g, wet, dry);
   o.start(t); o.stop(t + decay + 0.05);
 }
-/* El "pop" de burbuja real: un tono que cae rápido de agudo a grave + un chasquido de aire brevísimo
-   (la tensión de la burbuja que se rompe), en vez de un timbre de campana sostenido. */
-function pop(t, f0, decay, amp, noiseHp, wet) {
-  const o = audio.ctx.createOscillator(), g = audio.ctx.createGain();
-  o.type = "sine";
-  o.frequency.setValueAtTime(f0, t);
-  o.frequency.exponentialRampToValueAtTime(f0 * 0.45, t + decay * 0.4);
-  g.gain.setValueAtTime(0.0001, t);
-  g.gain.exponentialRampToValueAtTime(amp, t + 0.006);
-  g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
-  o.connect(g); sfxSend(g, wet);
-  o.start(t); o.stop(t + decay + 0.02);
-  const n = audio.ctx.createBufferSource(); n.buffer = noiseBuffer(0.03);
-  const hp = audio.ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = noiseHp;
-  const ng = audio.ctx.createGain();
-  ng.gain.setValueAtTime(amp * 0.5, t); ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.022);
-  n.connect(hp); hp.connect(ng); sfxSend(ng, wet * 0.85);
+/* El "pop" de burbuja real: un clic brevísimo que excita un filtro resonante (como una campanita de
+   agua) que sube de tono de golpe (se "estira") y enseguida cae — así suenan las burbujas en la
+   mayoría de los juegos. Mucho más parecido a una burbuja que un timbre de campana sostenido. */
+function pop(t, f0, fPeak, fEnd, decay, wet) {
+  const n = audio.ctx.createBufferSource(); n.buffer = noiseBuffer(0.009);
+  const bp = audio.ctx.createBiquadFilter(); bp.type = "bandpass"; bp.Q.value = 16;
+  bp.frequency.setValueAtTime(f0, t);
+  bp.frequency.exponentialRampToValueAtTime(fPeak, t + decay * 0.18);
+  bp.frequency.exponentialRampToValueAtTime(fEnd, t + decay);
+  const g = audio.ctx.createGain();
+  g.gain.setValueAtTime(0.9, t); g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
+  n.connect(bp); bp.connect(g); sfxSend(g, wet);
   n.start(t);
 }
 export function playPop(kind) {
   if (!audio.ctx || state.muted) return;
   const t = audio.ctx.currentTime;
-  if (kind === "pos") {                              // pop de burbuja agudo, con un resto de brillo breve
-    const f0 = [1600, 1800, 2000, 2200][Math.floor(Math.random() * 4)] * (0.98 + Math.random() * 0.04);
-    pop(t, f0, 0.09, 0.5, 3500, 0.35);
-    tone(f0 * 1.5, t + 0.05, 0.004, 0.28, 0.14, 0.4);
+  if (kind === "pos") {                              // pop de burbuja agudo
+    pop(t, 900, 2600, 400, 0.14, 0.35);
   } else if (kind === "neg") {                       // soplido que se aleja: aire que se cierra y se va
     const n = audio.ctx.createBufferSource(); n.buffer = noiseBuffer(1);
     const bp = audio.ctx.createBiquadFilter(); bp.type = "bandpass"; bp.Q.value = 1.1;
@@ -79,8 +72,7 @@ export function playPop(kind) {
     if (pan) { const side = Math.random() < 0.5 ? -1 : 1; pan.pan.setValueAtTime(side * 0.2, t); pan.pan.linearRampToValueAtTime(side * 0.85, t + 0.9); g.connect(pan); sfxSend(pan, 0.3); } else sfxSend(g, 0.3);
     n.start(t); n.stop(t + 1);
   } else if (kind === "neu") {                       // pop de burbuja más grave y cálido
-    pop(t, 980, 0.12, 0.5, 2200, 0.4);
-    tone(980 * 1.3, t + 0.06, 0.01, 0.55, 0.16, 0.4);
+    pop(t, 550, 1550, 230, 0.16, 0.4);
   } else {                                           // dark: se disuelve, grave suave
     const o = audio.ctx.createOscillator(), g = audio.ctx.createGain();
     o.type = "sine"; o.frequency.setValueAtTime(210, t); o.frequency.exponentialRampToValueAtTime(120, t + 0.3);
