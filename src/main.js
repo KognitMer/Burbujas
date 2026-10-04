@@ -9,8 +9,13 @@ import { bindHud } from "./ui/hud.js";
 import { bindMenu } from "./ui/menu.js";
 import { bindStats } from "./ui/stats.js";
 import { initBridge } from "./platform/bridge.js";
+import { setLang, LANG_CODES } from "./i18n/index.js";
 
 migrate();
+/* Idioma: se fija al cargar (no cambia a mitad de partida). Vía URL, como el resto de la integración. */
+const langParam = new URLSearchParams(globalThis.location?.search || "").get("lang");
+if (LANG_CODES.includes(langParam)) setLang(langParam);
+
 const saved = settings.get();
 applyMode(saved.mode || CONFIG.defaultMode, { persist: false });
 applySpeed(saved.speed || 0, { persist: false });

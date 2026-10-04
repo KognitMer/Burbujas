@@ -1,6 +1,7 @@
 import es from "./es.js";
+import en from "./en.js";
 
-const LANGS = { es };
+const LANGS = { es, en };
 let current = es;
 
 export function setLang(code) { current = LANGS[code] || es; return current; }
