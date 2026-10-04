@@ -27,8 +27,11 @@ ok((await page.textContent("#intro")).includes("Dejá pasar"), "texto del modo S
 await page.click("#btnStart");
 await page.waitForTimeout(500);
 ok(await page.$eval("#startScreen", e => e.classList.contains("hidden")), "menú se oculta al empezar");
-await page.waitForTimeout(3500);
-ok((await page.textContent("#hint")).length > 0, "aparece una pista la primera vez");
+let hintOk = true;
+try {
+  await page.waitForFunction(() => document.getElementById("hint").textContent.length > 0, { timeout: 8000 });
+} catch { hintOk = false; }
+ok(hintOk, "aparece una pista la primera vez");
 
 await page.waitForTimeout(4000);
 ok(true, "el juego sigue corriendo sin errores");
