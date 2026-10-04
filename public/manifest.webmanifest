@@ -1,0 +1,16 @@
+{
+  "name": "Burbujas · by Kognit",
+  "short_name": "Burbujas",
+  "description": "Juego de emociones y respiración: dejá pasar o atrapá burbujas a tu ritmo.",
+  "lang": "es",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#02030a",
+  "theme_color": "#02030a",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

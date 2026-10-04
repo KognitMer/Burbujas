@@ -33,3 +33,10 @@ window.addEventListener("orientationchange", () => setTimeout(resize, 200));
 resize();
 initBridge();
 startLoop();
+
+/* PWA: cache offline. Si corre embebido (iframe/WebView) y el navegador lo bloquea, no pasa nada. */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
+  });
+}

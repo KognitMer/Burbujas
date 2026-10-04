@@ -6,7 +6,7 @@
 - [ ] **Salud/bienestar**: texto de que no es un tratamiento médico; revisar copy de emociones con la psicóloga/equipo.
 - [x] **Accesibilidad**: reduced-motion ampliado, contraste de tabla de stats, roles/aria-label/focus-trap para lector de pantalla, zoom habilitado, navegación del gameplay por teclado (flechas + Enter, ver `DECISIONS.md`). Modo sin sonido ya existía (botón de mute). Pendiente: lectores de pantalla siguen sin poder jugar (el canvas no tiene fallback accesible; el teclado ayuda a usuarios de baja movilidad fina, no a ciegos).
 - [ ] **i18n**: hoy solo `es.js`; agregar `en.js` si hace falta.
-- [ ] **PWA/offline**: manifest + service worker si se usa fuera de la app.
+- [x] **PWA/offline**: manifest (`public/manifest.webmanifest`) + service worker (`public/sw.js`, cache runtime sin dependencias) con ícono generado a partir de la burbuja "Tranquilo". Instalable y jugable sin conexión tras la primera visita online. No interfiere si corre embebido en iframe/WebView (registro silencioso, sin romper nada si el navegador lo bloquea).
 - [ ] **Licencia de assets**: confirmar derechos de los personajes y del logo.
 - [ ] **Presupuesto de performance** y matriz de dispositivos (gama baja).
 - [ ] Decisión de economía (ver `ECONOMY.md`).
