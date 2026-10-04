@@ -1,8 +1,10 @@
 /* Verifica el resumen de sesión que recibe la app anfitriona. */
 import { chromium } from "playwright";
 import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
 const PORT = 4180;
-const srv = spawn("npx", ["vite", "preview", "--port", String(PORT), "--strictPort"], { stdio: "ignore" });
+const viteBin = fileURLToPath(new URL("../../node_modules/vite/bin/vite.js", import.meta.url));
+const srv = spawn(process.execPath, [viteBin, "preview", "--port", String(PORT), "--strictPort"], { stdio: "ignore" });
 await new Promise(r => setTimeout(r, 2500));
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 const page = await browser.newPage({ viewport: { width: 390, height: 780 } });
