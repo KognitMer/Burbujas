@@ -26,7 +26,7 @@ export function initAudio() {
 }
 
 /* Cada tipo de burbuja suena distinto:
-   pos = cristalino · neg = un soplido que se aleja · neu = campanita cálida · dark = disolverse suave.
+   pos = pop agudo con resto de brillo · neg = un soplido que se aleja · neu = pop cálido y grave · dark = disolverse suave.
    sfxSend manda una parte del sonido a la reverb de efectos (aire, sin graves). */
 function sfxSend(node, wet, dry = 1) {
   if (dry > 0) { if (dry === 1) node.connect(audio.master); else { const d = audio.ctx.createGain(); d.gain.value = dry; node.connect(d); d.connect(audio.master); } }
@@ -41,13 +41,32 @@ function tone(f, t, attack, decay, amp, wet, dry = 1) {
   o.connect(g); sfxSend(g, wet, dry);
   o.start(t); o.stop(t + decay + 0.05);
 }
+/* El "pop" de burbuja real: un tono que cae rápido de agudo a grave + un chasquido de aire brevísimo
+   (la tensión de la burbuja que se rompe), en vez de un timbre de campana sostenido. */
+function pop(t, f0, decay, amp, noiseHp, wet) {
+  const o = audio.ctx.createOscillator(), g = audio.ctx.createGain();
+  o.type = "sine";
+  o.frequency.setValueAtTime(f0, t);
+  o.frequency.exponentialRampToValueAtTime(f0 * 0.45, t + decay * 0.4);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(amp, t + 0.006);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
+  o.connect(g); sfxSend(g, wet);
+  o.start(t); o.stop(t + decay + 0.02);
+  const n = audio.ctx.createBufferSource(); n.buffer = noiseBuffer(0.03);
+  const hp = audio.ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = noiseHp;
+  const ng = audio.ctx.createGain();
+  ng.gain.setValueAtTime(amp * 0.5, t); ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.022);
+  n.connect(hp); hp.connect(ng); sfxSend(ng, wet * 0.85);
+  n.start(t);
+}
 export function playPop(kind) {
   if (!audio.ctx || state.muted) return;
   const t = audio.ctx.currentTime;
-  if (kind === "pos") {                              // cristalino: parciales de vidrio, ataque limpio, eco brillante
-    const f = [1046.5, 1318.5, 1568, 1975.5][Math.floor(Math.random() * 4)] * (0.99 + Math.random() * 0.02);
-    [[1, 0.6], [2.76, 0.21], [5.4, 0.09]].forEach(([m, a]) => tone(f * m, t, 0.004, 0.55 / Math.sqrt(m), a, 0.35));
-    tone(f * 1.5, t + 0.09, 0.004, 0.5, 0.3, 0.5);
+  if (kind === "pos") {                              // pop de burbuja agudo, con un resto de brillo breve
+    const f0 = [1600, 1800, 2000, 2200][Math.floor(Math.random() * 4)] * (0.98 + Math.random() * 0.04);
+    pop(t, f0, 0.09, 0.5, 3500, 0.35);
+    tone(f0 * 1.5, t + 0.05, 0.004, 0.28, 0.14, 0.4);
   } else if (kind === "neg") {                       // soplido que se aleja: aire que se cierra y se va
     const n = audio.ctx.createBufferSource(); n.buffer = noiseBuffer(1);
     const bp = audio.ctx.createBiquadFilter(); bp.type = "bandpass"; bp.Q.value = 1.1;
@@ -59,8 +78,9 @@ export function playPop(kind) {
     n.connect(bp); bp.connect(lp); lp.connect(g);
     if (pan) { const side = Math.random() < 0.5 ? -1 : 1; pan.pan.setValueAtTime(side * 0.2, t); pan.pan.linearRampToValueAtTime(side * 0.85, t + 0.9); g.connect(pan); sfxSend(pan, 0.3); } else sfxSend(g, 0.3);
     n.start(t); n.stop(t + 1);
-  } else if (kind === "neu") {                       // campanita cálida, sobre la base de 639 Hz
-    tone(639, t, 0.01, 1.1, 0.55, 0.4); tone(1278, t, 0.01, 0.7, 0.16, 0.4); tone(958.5, t + 0.07, 0.01, 0.9, 0.25, 0.4);
+  } else if (kind === "neu") {                       // pop de burbuja más grave y cálido
+    pop(t, 980, 0.12, 0.5, 2200, 0.4);
+    tone(980 * 1.3, t + 0.06, 0.01, 0.55, 0.16, 0.4);
   } else {                                           // dark: se disuelve, grave suave
     const o = audio.ctx.createOscillator(), g = audio.ctx.createGain();
     o.type = "sine"; o.frequency.setValueAtTime(210, t); o.frequency.exponentialRampToValueAtTime(120, t + 0.3);
