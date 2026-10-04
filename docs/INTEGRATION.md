@@ -2,7 +2,7 @@
 Como no sabemos aún el stack de la app (web, React Native, Flutter…), el juego se integra como **iframe / WebView** y habla por mensajes.
 
 ## URL
-`https://…/?host=<origen de la app>&mode=soltar|explotar|zen&speed=suave|rapida|turbo&music=espacio|kalimba|off&breath=0|1&muted=0|1&lang=es|en`
+`https://…/?host=<origen de la app>&mode=soltar|explotar|zen&speed=suave|rapida|turbo&music=espacio|presente|off&breath=0|1&muted=0|1&lang=es|en`
 
 `lang` se fija al cargar la página (no es parte de `config`, no cambia a mitad de partida); si falta o no es `es`/`en`, queda en español.
 

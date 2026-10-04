@@ -38,7 +38,7 @@ export const CONFIG = {
   volume: 0.07,                  // volumen de los efectos: muy tenue
   musicVolume: 0.34,             // volumen de la música de fondo (0 = sin música)
   defaultMusic: "espacio",
-  musicStyles: ["espacio", "kalimba", "off"],
+  musicStyles: ["espacio", "presente", "off"],
   // ---- sesión ----
   minSessionSeconds: 5,          // sesiones más cortas no se reportan
   idleEndSeconds: 90,            // si queda en pausa/oculto tanto tiempo, la sesión se cierra

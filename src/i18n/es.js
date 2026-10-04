@@ -5,7 +5,7 @@ export default {
   hud: { score: "Burbujas", scoreZen: "Soltadas", best: "Récord" },
   breath: { in: "Inhala", out: "Exhala", tip: "Respirá con el círculo: inhalá 4 s · exhalá 6 s" },
   speeds: { suave: "Suave", rapida: "Rápida", turbo: "Turbo" },
-  music: { espacio: "Espacio", kalimba: "Kalimba", off: "Sin música" },
+  music: { espacio: "Espacio", presente: "Presente", off: "Sin música" },
   emotions: {
     abrumado: "Abrumado", analisis: "Análisis excesivo", frustrado: "Frustrado", miedo: "Miedo", tilt: "Tilt",
     neutral: "Neutral", flow: "Flow state", inspirado: "Inspirado", tranquilo: "Tranquilo"

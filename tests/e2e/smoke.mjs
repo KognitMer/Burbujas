@@ -45,7 +45,7 @@ for (const m of ["explotar", "zen"]) {
 ok(await page.$eval("#right", e => e.classList.contains("off")), "Zen oculta el récord");
 
 await page.click("#btnMusic"); await page.waitForTimeout(200);
-ok((await page.textContent("#btnMusic")).includes("Kalimba"), "cambia a Kalimba");
+ok((await page.textContent("#btnMusic")).includes("Presente"), "cambia a Presente");
 await page.click("#btnPause");
 ok((await page.textContent("#btnPause")).includes("Seguir"), "pausa");
 await page.click("#btnPause");

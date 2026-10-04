@@ -52,7 +52,7 @@ function handle(data) {
 }
 
 export function initBridge() {
-  // URL: ?mode=zen&speed=suave&music=kalimba&breath=0&muted=1&host=https://app.kognit.com
+  // URL: ?mode=zen&speed=suave&music=presente&breath=0&muted=1&host=https://app.kognit.com
   const q = {};
   for (const k of ["mode", "speed", "music"]) if (params.get(k)) q[k] = params.get(k);
   if (params.has("breath")) q.breath = params.get("breath") !== "0";

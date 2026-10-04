@@ -5,7 +5,7 @@ Antes de tocar nada: leer `docs/DECISIONS.md`.
 - Tabla de puntajes (`src/config.js` → `modes`) y su test (`tests/scoring.test.js`).
 - Respiración: inhala 4 s / exhala 6 s, **sin retención**.
 - Estilo visual de las burbujas (aro iridiscente, nubes, destellos). Los PNG/WebP se generan con `tools/`; no re-estilizar.
-- No integrar mp3 externos (p. ej. 639 Hz). La música es sintetizada (`src/audio/music.js`). Estilos: Espacio, Kalimba, Sin música.
+- No integrar mp3 externos (p. ej. 639 Hz). La música es sintetizada (`src/audio/music.js`). Estilos: Espacio, Presente, Sin música.
 - Tono: español rioplatense (voseo), amable, sin castigo ni presión. Los textos viven en `src/i18n/es.js`.
 
 ## Reglas de código

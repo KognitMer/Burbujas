@@ -5,7 +5,7 @@ export default {
   hud: { score: "Bubbles", scoreZen: "Released", best: "Best" },
   breath: { in: "Breathe in", out: "Breathe out", tip: "Breathe with the circle: in for 4 s · out for 6 s" },
   speeds: { suave: "Gentle", rapida: "Fast", turbo: "Turbo" },
-  music: { espacio: "Space", kalimba: "Kalimba", off: "No music" },
+  music: { espacio: "Space", presente: "Present", off: "No music" },
   emotions: {
     abrumado: "Overwhelmed", analisis: "Overthinking", frustrado: "Frustrated", miedo: "Fear", tilt: "Tilt",
     neutral: "Neutral", flow: "Flow state", inspirado: "Inspired", tranquilo: "Calm"
