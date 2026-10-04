@@ -1,6 +1,6 @@
 # Capas que faltan (checklist para que no nos sorprendan)
 - [ ] **Prueba en celulares reales** (iOS Safari, Android Chrome, WebView): audio, rendimiento, safe areas.
-- [ ] **Identidad**: quién juega (la app pasa `meta`/userRef; el juego no autentica).
+- [x] **Identidad**: quién juega (la app pasa `meta`/userRef; el juego no autentica). Ya funciona: el bridge reenvía `meta` tal cual en `session:end` sin tocarlo (ver `tests/e2e/bridge.mjs`). Como los dispositivos son personales (confirmado con María), no hace falta namespacear las estadísticas locales por usuario.
 - [ ] **Backend**: recibir `session:end`, validar con `pointsFromCounts`, idempotencia, tope diario.
 - [ ] **Analítica y consentimiento**: qué se mide, dónde se guarda, aviso de privacidad.
 - [ ] **Salud/bienestar**: texto de que no es un tratamiento médico; revisar copy de emociones con la psicóloga/equipo.
