@@ -55,7 +55,7 @@ export function drawBackground(dt) {
   ctx.fillRect(0, 0, view.W, view.H);
   const bk = state.breathOn && !view.reduced ? breath.k : 0.5;   // el fondo respira con el círculo (salvo "reducir movimiento")
   for (const n of nebulae) {
-    n.x += n.dx * dt;
+    n.x += n.dx * dt * (view.reduced ? 0.15 : 1);
     if (n.x < -n.r * 0.3) n.dx = Math.abs(n.dx);
     if (n.x > view.W + n.r * 0.3) n.dx = -Math.abs(n.dx);
     const nr = n.r * (0.94 + 0.12 * bk);
@@ -68,7 +68,7 @@ export function drawBackground(dt) {
   for (const s of stars) {
     s.y += s.speed * (view.reduced ? 0.25 : 0.55 + 0.9 * bk) * dt;
     if (s.y > view.H + 2) { s.y = -2; s.x = Math.random() * view.W; }
-    s.tw += s.twSpeed * dt;
+    s.tw += s.twSpeed * dt * (view.reduced ? 0.2 : 1);
     const a = s.a * (0.6 + 0.4 * Math.sin(s.tw)) * (0.8 + 0.3 * bk);
     ctx.fillStyle = s.hue ? `hsla(${s.hue},80%,85%,${a})` : `rgba(255,255,255,${a})`;
     ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.2832); ctx.fill();

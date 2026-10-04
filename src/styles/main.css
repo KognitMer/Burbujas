@@ -41,7 +41,7 @@ table.stats th { font-weight: 500; opacity: .65; font-size: 11px; letter-spacing
 table.stats td { padding: 5px 9px; text-align: right; font-variant-numeric: tabular-nums; }
 table.stats td:first-child, table.stats th:first-child { text-align: left; }
 table.stats tr.total td { border-top: 1px solid rgba(160,200,255,.3); font-weight: 600; }
-table.stats tr.none td { opacity: .35; }
+table.stats tr.none td { opacity: .55; }
 .statsnote { font-size: 13px; line-height: 1.5; opacity: .8; max-width: 560px; margin: 6px 0; }
 .opts { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; margin-top: 14px; }
 .opts .speeds { margin-top: 0; }
@@ -79,4 +79,8 @@ table.stats tr.none td { opacity: .35; }
   .overlay button { margin-top: 10px; padding: 9px 28px; min-height: 40px; }
   .overlay .speeds { margin-top: 8px; }
   #score b { font-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #score b, #hint, .overlay, .overlay button { transition: none; }
+  #score b.bump { transform: none; }
 }

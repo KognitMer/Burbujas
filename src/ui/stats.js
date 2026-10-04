@@ -1,5 +1,5 @@
 /* ESTADÍSTICAS locales (últimos 7 días, por modo) + exportar CSV + borrar datos. */
-import { $ } from "../dom.js";
+import { $, trapFocus } from "../dom.js";
 import { state } from "../state.js";
 import { dayKey, nf } from "../util.js";
 import { t } from "../i18n/index.js";
@@ -17,7 +17,7 @@ const c = t => t.stats.cols;
 function renderZen() {
   $("statsMode").textContent = t.stats.zenLine;
   const col = c(t);
-  let html = `<table class="stats"><tr><th>${col.day}</th><th>${col.min}</th><th>${col.sessionsLong}</th><th>${col.released}</th></tr>`;
+  let html = `<table class="stats"><tr><th scope="col">${col.day}</th><th scope="col">${col.min}</th><th scope="col">${col.sessionsLong}</th><th scope="col">${col.released}</th></tr>`;
   const tot = EMPTY_ROW();
   lastDays(7).forEach((d, i, arr) => {
     const r = (getLog()[dayKey(d)] || {}).zen, label = dayLabel(d, i, arr);
@@ -33,7 +33,7 @@ function renderZen() {
 function renderPoints(mode) {
   $("statsMode").textContent = t.stats.modeLine(t.modes[mode].name);
   const col = c(t);
-  let html = `<table class="stats"><tr><th>${col.day}</th><th>${col.min}</th><th class="cp">${col.sessions}</th><th>${col.earned}</th><th>${col.lost}</th><th>${col.net}</th><th>${col.ppm}</th></tr>`;
+  let html = `<table class="stats"><tr><th scope="col">${col.day}</th><th scope="col">${col.min}</th><th scope="col" class="cp">${col.sessions}</th><th scope="col">${col.earned}</th><th scope="col">${col.lost}</th><th scope="col">${col.net}</th><th scope="col">${col.ppm}</th></tr>`;
   const tot = EMPTY_ROW(); let played = 0;
   lastDays(7).forEach((d, i, arr) => {
     const r = (getLog()[dayKey(d)] || {})[mode], label = dayLabel(d, i, arr);
@@ -64,11 +64,19 @@ export function buildCSV() {
 }
 
 export function renderStats() { state.rules === "zen" ? renderZen() : renderPoints(state.rules); }
+let releaseTrap = null, returnFocusTo = null;
 export function openStats() {
   saveLog(); renderStats(); pause();
+  returnFocusTo = document.activeElement;
   $("statsScreen").classList.remove("hidden");
+  releaseTrap = trapFocus($("statsScreen"));
+  $("btnStatsClose").focus();
 }
-const closeStats = () => $("statsScreen").classList.add("hidden");
+const closeStats = () => {
+  $("statsScreen").classList.add("hidden");
+  if (releaseTrap) { releaseTrap(); releaseTrap = null; }
+  if (returnFocusTo?.isConnected) returnFocusTo.focus();
+};
 
 export function bindStats() {
   $("statsTitle").textContent = t.stats.title;

@@ -101,6 +101,7 @@ export function drawWarns() {
 }
 
 export function burst(x, y, r, color, count) {
+  if (view.reduced) count = Math.ceil(count * 0.3);
   for (let i = 0; i < count; i++) {
     const a = Math.random() * 6.2832, sp = rand(40, 190);
     world.particles.push({ x: x + Math.cos(a) * r * 0.6, y: y + Math.sin(a) * r * 0.6,

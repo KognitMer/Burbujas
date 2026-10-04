@@ -1,6 +1,6 @@
 /* MENÚ y botones inferiores: chips de modo / velocidad / música y textos de los botones. */
 import { CONFIG } from "../config.js";
-import { $ } from "../dom.js";
+import { $, trapFocus } from "../dom.js";
 import { state } from "../state.js";
 import { t } from "../i18n/index.js";
 import { on } from "../events.js";
@@ -14,23 +14,30 @@ const chips = (id, items, current, onPick) => {
   items.forEach(({ key, label }) => {
     const b = document.createElement("button");
     b.textContent = label; b.dataset.key = key;
+    b.setAttribute("aria-pressed", "false");
     b.onclick = () => onPick(key);
     box.appendChild(b);
   });
   void current;
 };
-const mark = (id, key) => document.querySelectorAll(`#${id} button`).forEach(b => b.classList.toggle("on", b.dataset.key === String(key)));
+const mark = (id, key) => document.querySelectorAll(`#${id} button`).forEach(b => {
+  const on = b.dataset.key === String(key);
+  b.classList.toggle("on", on);
+  b.setAttribute("aria-pressed", String(on));
+});
 const cycle = (list, cur) => list[(list.indexOf(cur) + 1) % list.length];
+
+const setLabel = (id, text) => { const el = $(id); el.textContent = text; el.setAttribute("aria-label", text); };
 
 export function renderMenu() {
   const mode = state.rules, music = getMusicStyle();
   $("intro").textContent = t.modes[mode].intro;
-  $("btnRules").textContent = "🎯 " + t.modes[mode].name;
-  $("btnSpeed").textContent = "🫧 " + t.speeds[CONFIG.speeds[state.speedLevel].id];
-  $("btnMusic").textContent = "🎵 " + t.music[music];
+  setLabel("btnRules", "🎯 " + t.modes[mode].name);
+  setLabel("btnSpeed", "🫧 " + t.speeds[CONFIG.speeds[state.speedLevel].id]);
+  setLabel("btnMusic", "🎵 " + t.music[music]);
   $("btnBreath").textContent = state.breathOn ? t.buttons.breathOn : t.buttons.breathOff;
-  $("btnMute").textContent = state.muted ? t.buttons.unmute : t.buttons.mute;
-  $("btnPause").textContent = state.mode === "paused" ? t.buttons.resume : t.buttons.pause;
+  setLabel("btnMute", state.muted ? t.buttons.unmute : t.buttons.mute);
+  setLabel("btnPause", state.mode === "paused" ? t.buttons.resume : t.buttons.pause);
   mark("ruleChips", mode); mark("speedChips", state.speedLevel); mark("musicChips", music);
 }
 
@@ -53,8 +60,17 @@ export function bindMenu() {
   $("btnStats").onclick = openStats;
   $("btnStatsStart").onclick = openStats;
 
+  let releaseTrap = null;
   on("settings", renderMenu);
   on("pause", renderMenu);
-  on("screen", ({ name }) => { $("startScreen").classList.toggle("hidden", name !== "menu"); renderMenu(); });
+  on("screen", ({ name }) => {
+    const isMenu = name === "menu";
+    $("startScreen").classList.toggle("hidden", !isMenu);
+    if (releaseTrap) { releaseTrap(); releaseTrap = null; }
+    if (isMenu) { releaseTrap = trapFocus($("startScreen")); $("btnStart").focus(); }
+    else document.activeElement?.blur();
+    renderMenu();
+  });
   renderMenu();
+  if (!$("startScreen").classList.contains("hidden")) { releaseTrap = trapFocus($("startScreen")); $("btnStart").focus(); }
 }
