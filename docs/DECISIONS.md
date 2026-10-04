@@ -7,3 +7,4 @@
 6. Burbujas: se conserva el estilo original; solo se hacen transparentes los huecos internos (`tools/process_bubbles.py`).
 7. Voseo rioplatense en todos los textos.
 8. Integración vía iframe/WebView + postMessage (stack de la app desconocido).
+9. Navegación por teclado (alternativa al mouse/touch, no lo reemplaza): flechas eligen una burbuja (aro celeste), Enter la toca. Se activa recién al primer uso de las flechas (no se ve si jugás con mouse/touch); pista única la primera vez, vía `tutorial.mark("keyboard")`.

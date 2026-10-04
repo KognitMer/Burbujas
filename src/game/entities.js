@@ -234,6 +234,10 @@ export function drawBubble(b) {
     ctx.setLineDash([6, 9]); ctx.lineDashOffset = -b.wobble * 30;
     ctx.beginPath(); ctx.arc(0, 0, b.r * 1.22, 0, 6.2832); ctx.stroke(); ctx.setLineDash([]);
   }
+  if (b.kbFocus) {                                                 // cursor de teclado: cuál vas a tocar con Enter
+    ctx.lineWidth = 2.4; ctx.strokeStyle = `rgba(95,216,255,${0.55 + 0.25 * Math.sin(b.wobble * 3)})`;
+    ctx.beginPath(); ctx.arc(0, 0, b.r * 1.34, 0, 6.2832); ctx.stroke();
+  }
   ctx.rotate(b.rot);
   const d = b.r * 2;
   // la imagen tal cual, con sus colores y su transparencia originales
@@ -269,6 +273,10 @@ export function drawDark(k) {
   // brillo
   ctx.fillStyle = "rgba(255,255,255,.22)";
   ctx.beginPath(); ctx.ellipse(-k.r * 0.38, -k.r * 0.45, k.r * 0.22, k.r * 0.12, -0.6, 0, 6.2832); ctx.fill();
+  if (k.kbFocus) {                                  // cursor de teclado
+    ctx.lineWidth = 2.4; ctx.strokeStyle = `rgba(95,216,255,${0.55 + 0.25 * Math.sin(k.pulse * 3)})`;
+    ctx.beginPath(); ctx.arc(0, 0, k.r * 1.34, 0, 6.2832); ctx.stroke();
+  }
   ctx.restore();
 }
 

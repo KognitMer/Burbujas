@@ -32,7 +32,10 @@ export default {
     }
   },
   floats: { letGo: "La dejaste ir" },
-  hints: { darkIncoming: "Viene una burbuja oscura: tocala para disolverla" },
+  hints: {
+    darkIncoming: "Viene una burbuja oscura: tocala para disolverla",
+    keyboard: "Con las flechas elegís una burbuja y con Enter la tocás"
+  },
   buttons: {
     start: "Empezar", stats: "Estadísticas", statsIcon: "📊", close: "Cerrar",
     pause: "⏸ Pausa", resume: "▶ Seguir", mute: "🔊 Sonido", unmute: "🔇 Silencio",

@@ -11,6 +11,7 @@ import {
   popBubble, releaseBubble, drawBubble, drawDark, drawEffects
 } from "./entities.js";
 import { updateTutorial } from "./tutorial.js";
+import { updateKbFocus } from "./input.js";
 
 let last = performance.now();
 export const resetClock = () => { last = performance.now(); };
@@ -43,6 +44,7 @@ export function update(dt) {
   }
   for (const w of world.warns) { w.t += dt; if (w.t >= w.dur) { spawnDark(w); w.dead = true; } }
   updateTutorial(dt);
+  updateKbFocus();
 
   // burbujas normales
   for (const b of world.bubbles) {
@@ -81,6 +83,7 @@ export function update(dt) {
   // burbuja oscura: mueve y revienta lo que toca
   for (const k of world.darks) {
     const dm = darkMult();
+    k.pulse += dt;
     k.x += k.vx * dm * dt; k.y += k.vy * dm * dt;
     if (k.y < k.r || k.y > view.H - k.r) k.vy *= -1;   // rebota arriba/abajo
     for (const b of bs) {
