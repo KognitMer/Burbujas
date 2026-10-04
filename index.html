@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#02030a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Burbujas · by Kognit</title>
+<link rel="icon" href="./assets/kognit-logo.png">
+<link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="hud">
+  <div id="left"><div id="score"><span id="scoreLabel"></span><b id="scoreVal">0</b></div></div>
+  <div id="right"><span id="bestLabel"></span><b id="bestVal">0</b></div>
+</div>
+<div id="hint" aria-live="polite"></div>
+
+<img id="watermark" src="./assets/kognit-logo.png" alt="Kognit">
+
+<div id="btns">
+  <button id="btnStats" aria-label="Estadísticas">📊</button>
+  <button id="btnRules"></button>
+  <button id="btnSpeed"></button>
+  <button id="btnMusic"></button>
+  <button id="btnBreath" aria-label="Respiración">🌬</button>
+  <button id="btnPause"></button>
+  <button id="btnMute"></button>
+</div>
+
+<div id="startScreen" class="overlay">
+  <h1>BURBUJAS</h1>
+  <div class="by"><span>by</span><img src="./assets/kognit-logo.png" alt="Kognit"></div>
+  <p id="intro" class="lead"></p>
+  <div class="opts"><div class="speeds" id="ruleChips"></div><div class="speeds" id="speedChips"></div><div class="speeds" id="musicChips"></div></div>
+  <p class="tip" id="tip"></p>
+  <div class="actions"><button id="btnStart"></button><button class="ghost" id="btnStatsStart"></button></div>
+</div>
+
+<div id="statsScreen" class="overlay hidden">
+  <h1 style="font-size:34px;letter-spacing:.1em" id="statsTitle"></h1>
+  <p id="statsMode" style="opacity:.7;font-size:14px"></p>
+  <div id="statsBody"></div>
+  <div class="speeds" style="flex-wrap:wrap;justify-content:center">
+    <button id="btnCopy"></button><button id="btnResetLog"></button>
+  </div>
+  <button id="btnStatsClose"></button>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

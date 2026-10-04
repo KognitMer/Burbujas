@@ -1,0 +1,12 @@
+# Capas que faltan (checklist para que no nos sorprendan)
+- [ ] **Prueba en celulares reales** (iOS Safari, Android Chrome, WebView): audio, rendimiento, safe areas.
+- [ ] **Identidad**: quién juega (la app pasa `meta`/userRef; el juego no autentica).
+- [ ] **Backend**: recibir `session:end`, validar con `pointsFromCounts`, idempotencia, tope diario.
+- [ ] **Analítica y consentimiento**: qué se mide, dónde se guarda, aviso de privacidad.
+- [ ] **Salud/bienestar**: texto de que no es un tratamiento médico; revisar copy de emociones con la psicóloga/equipo.
+- [ ] **Accesibilidad**: reduced-motion (parcial), contraste, lector de pantalla, modo sin sonido.
+- [ ] **i18n**: hoy solo `es.js`; agregar `en.js` si hace falta.
+- [ ] **PWA/offline**: manifest + service worker si se usa fuera de la app.
+- [ ] **Licencia de assets**: confirmar derechos de los personajes y del logo.
+- [ ] **Presupuesto de performance** y matriz de dispositivos (gama baja).
+- [ ] Decisión de economía (ver `ECONOMY.md`).
