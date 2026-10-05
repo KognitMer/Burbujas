@@ -19,7 +19,7 @@ export const CONFIG = {
   typeSpeed: { neg: 0.8, pos: 1.05, neu: 1 },   // las difíciles se mueven más lento
   releaseFade: 0.9,              // segundos que tarda en disolverse una emoción que se suelta
   speeds: [                      // niveles de velocidad (el nombre visible está en i18n)
-    { id: "suave",  mult: 1.9 },
+    { id: "suave",  mult: 1.6 },
     { id: "rapida", mult: 2.7 },
     { id: "turbo",  mult: 3.7 }
   ],
